@@ -1,0 +1,2 @@
+-keep class org.tensorflow.lite.** { *; }
+-keep class io.flutter.** { *; }

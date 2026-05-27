@@ -1,0 +1,10 @@
+services:
+  offline-face-api:
+    build:
+      context: ../..
+      dockerfile: deployment/docker/Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ../../database:/app/database
+      - ../../ai_models/weights:/app/ai_models/weights

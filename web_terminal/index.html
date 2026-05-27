@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NHAI Security | Offline Bio-Terminal</title>
+    <link rel="stylesheet" href="./styles.css?v=extract-user-fix-1" />
+  </head>
+  <body>
+    <div class="terminal-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark"><span></span></div>
+          <div class="brand-copy">
+            <strong>NHAI SECURITY</strong>
+            <span>OFFLINE BIO-TERMINAL</span>
+          </div>
+        </div>
+
+        <div class="mode-panel">
+          <div class="offline-row"><strong>OFFLINE MODE</strong><i></i></div>
+          <div><span>SYS: ok</span><span>SECURE</span></div>
+          <button class="theme-toggle" id="themeToggle" type="button">LIGHT MODE</button>
+        </div>
+
+        <nav class="nav">
+          <button class="nav-item active" data-view="dashboard" data-route="/"><span>⌁</span>DASHBOARD</button>
+          <button class="nav-item" data-view="enroll" data-route="/register"><span>♙</span>ENROLL USER</button>
+          <button class="nav-item" data-view="verify" data-route="/verify"><span>⌗</span>FACE VERIFY</button>
+          <button class="nav-item" data-view="liveness" data-route="/liveness"><span>◉</span>LIVENESS DETECT</button>
+          <button class="nav-item" data-view="database" data-route="/users"><span>⚇</span>DATABASE</button>
+          <button class="nav-item" data-view="logs" data-route="/logs"><span>▤</span>VERIFY LOGS</button>
+          <button class="nav-item" data-view="system" data-route="/system"><span>⚙</span>SYSTEM STATUS</button>
+          <button class="nav-item" data-view="architecture" data-route="/docs"><span>⌘</span>ARCHITECTURE</button>
+        </nav>
+
+        <div class="terminal-meta">
+          <div><span>TERM_ID:</span><strong>NHAI-OP-004</strong></div>
+          <div><span>ENCRYPTION:</span><strong>AES-256</strong></div>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <section class="view active" id="dashboard">
+          <header class="page-head split">
+            <div>
+              <h1>OPERATIONS DASHBOARD</h1>
+              <p>Real-time terminal telemetry</p>
+            </div>
+            <div class="telemetry">
+              <span>FPS: <strong id="fpsValue">31.70</strong></span>
+              <span>RAM: <strong id="ramValue">154.13MB</strong></span>
+            </div>
+          </header>
+
+          <div class="metric-grid">
+            <article class="metric-card"><span>TOTAL REGISTERED</span><strong id="registeredCount">8</strong><i>♙</i></article>
+            <article class="metric-card"><span>TODAY'S VERIFICATIONS</span><strong id="verifyCount">0</strong><i>⌁</i></article>
+            <article class="metric-card success"><span>SUCCESS RATE</span><strong>70.0%</strong><i>⌬</i></article>
+            <article class="metric-card danger"><span>SPOOF BLOCKED</span><strong>2</strong><i>⌬</i></article>
+          </div>
+
+          <div class="dashboard-grid">
+            <article class="panel chart-panel">
+              <h2>THROUGHPUT TREND</h2>
+              <div class="chart">
+                <svg viewBox="0 0 760 310" role="img" aria-label="Throughput trend">
+                  <g class="grid-lines">
+                    <line x1="70" y1="45" x2="720" y2="45" />
+                    <line x1="70" y1="105" x2="720" y2="105" />
+                    <line x1="70" y1="165" x2="720" y2="165" />
+                    <line x1="70" y1="225" x2="720" y2="225" />
+                    <line x1="70" y1="285" x2="720" y2="285" />
+                  </g>
+                  <polyline id="trendOrange" class="line-orange" points="70,225 140,225 140,160 290,160 290,45 430,45 430,100 565,100 565,210 700,210 700,170 720,170" />
+                  <polyline id="trendGreen" class="line-green" points="70,240 140,240 140,178 290,178 290,58 430,58 430,115 565,115 565,220 700,220 700,183 720,183" />
+                  <g class="axis">
+                    <text x="48" y="50">40</text><text x="48" y="110">30</text><text x="48" y="170">20</text><text x="48" y="230">10</text><text x="48" y="290">0</text>
+                    <text x="70" y="306">08:00</text><text x="205" y="306">09:00</text><text x="340" y="306">10:00</text><text x="475" y="306">11:00</text><text x="610" y="306">12:00</text><text x="690" y="306">13:00</text>
+                  </g>
+                </svg>
+              </div>
+            </article>
+
+            <article class="panel pipeline-panel">
+              <h2>PIPELINE STATUS</h2>
+              <div class="status-stack">
+                <div><span>DETECTION</span><strong>BlazeFace (MobileNet backbone)</strong><em>ONLINE</em></div>
+                <div><span>LIVENESS</span><strong>MiniFASNet-v2 (INT8 quantized)</strong><em>ONLINE</em></div>
+                <div><span>EMBEDDING</span><strong>MobileFaceNet (ArcFace loss, 512D)</strong><em>ONLINE</em></div>
+              </div>
+            </article>
+          </div>
+
+          <article class="panel feed-panel">
+            <h2>REAL-TIME FEED</h2>
+            <table>
+              <thead><tr><th>TIMESTAMP</th><th>SUBJECT</th><th>CONFIDENCE</th><th>LIVENESS</th><th>PROCESSING</th><th>RESULT</th></tr></thead>
+              <tbody id="dashboardFeedRows">
+                <tr><td>16:52:39.405</td><td>Sunita Devi</td><td><span class="bar"><i style="width:85%"></i></span>85%</td><td class="ok">PASS</td><td>2ms</td><td><span class="badge ok">MATCH</span></td></tr>
+                <tr><td>13:38:01.078</td><td>ADHANYA CREATIONS</td><td><span class="bar"><i style="width:85%"></i></span>85%</td><td class="ok">PASS</td><td>10ms</td><td><span class="badge ok">MATCH</span></td></tr>
+                <tr><td>13:35:51.861</td><td>SHARMA</td><td><span class="bar"><i style="width:85%"></i></span>85%</td><td class="ok">PASS</td><td>13ms</td><td><span class="badge ok">MATCH</span></td></tr>
+                <tr><td>13:13:45.269</td><td>Sunita Devi</td><td><span class="bar"><i style="width:89%"></i></span>89%</td><td class="ok">PASS</td><td>678ms</td><td><span class="badge ok">MATCH</span></td></tr>
+                <tr><td>13:13:43.057</td><td>UNKNOWN</td><td><span class="bar"><i style="width:0%"></i></span>0%</td><td class="block">FAIL</td><td>195ms</td><td><span class="badge block">SPOOF</span></td></tr>
+              </tbody>
+            </table>
+            <div class="feed-row" id="feedRow"></div>
+          </article>
+        </section>
+
+        <section class="view" id="enroll">
+          <header class="page-head center-head">
+            <h1><span>◍</span> ENTITY ENROLLMENT</h1>
+            <p>Register new entity into offline biometric database</p>
+          </header>
+          <div class="steps"><span class="active">01_IDENTITY</span><span>02_CAPTURE</span><span>03_EXTRACT</span></div>
+          <article class="panel form-panel">
+            <h2>IDENTITY DATA</h2>
+            <div class="identity-body">
+              <label>ENTITY ID<input id="entityId" value="NHAI-EMP-011" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" /></label>
+              <label>FULL NAME<input id="entityName" value="OPEN AI" autocomplete="off" autocorrect="off" autocapitalize="words" spellcheck="false" /></label>
+              <button class="primary-action" id="captureSequence">INITIALIZE CAPTURE SEQUENCE</button>
+            </div>
+          </article>
+          <article class="capture-stage hidden" id="captureStage">
+            <div class="alert" id="captureAlert"><strong>△ ALIGNMENT REQUIRED</strong><span>Face the camera directly. Remove glasses and masks. Good lighting required for baseline embedding extraction.</span></div>
+            <div class="camera-box">
+              <video id="enrollVideo" autoplay muted playsinline></video>
+              <div class="camera-fallback">CAMERA FEED</div>
+              <button class="camera-enable" data-camera-start>ENABLE CAMERA</button>
+              <canvas class="face-canvas" data-video="enrollVideo"></canvas>
+              <div class="lock-corners"></div>
+              <span class="face-tag">CAMERA OFF</span>
+              <span class="locked-tag">WAITING</span>
+              <span class="live-tag">● LIVE</span>
+              <span class="model-tag">MEDIAPIPE</span>
+              <span class="fps-tag">44 FPS</span>
+            </div>
+            <div class="capture-readiness">
+              <span id="enrollStatus">Waiting for centered face</span>
+              <div><b id="enrollProgress"></b></div>
+            </div>
+            <button class="primary-action compact" id="completeEnroll" disabled>▣ CAPTURE FACE</button>
+            <article class="extract-card hidden" id="extractResult">
+              <h2>03_EXTRACT · SAVED USER</h2>
+              <div class="extract-grid">
+                <div><span>ENTITY ID</span><strong id="savedEntityId">--</strong></div>
+                <div><span>NAME</span><strong id="savedEntityName">--</strong></div>
+                <div><span>EMBEDDING</span><strong>512D ArcFace</strong></div>
+                <div><span>QUALITY</span><strong id="savedQuality">--%</strong></div>
+                <div><span>STORAGE</span><strong>SQLite + FAISS</strong></div>
+                <div><span>STATUS</span><strong id="savedStatus">ENCRYPTED</strong></div>
+              </div>
+              <button class="secondary-action" id="viewSavedUser" type="button">VIEW IN DATABASE</button>
+            </article>
+          </article>
+        </section>
+
+        <section class="view" id="verify">
+          <header class="page-head verify-head">
+            <div>
+              <h1><span>⌗</span> 1:N FACE VERIFICATION</h1>
+              <p>BlazeFace real-time detection → ArcFace 512D matching</p>
+            </div>
+            <div class="toggle-row">
+              <button class="toggle on">LIVENESS</button>
+              <button class="toggle">AUTO-SCAN</button>
+              <button class="toggle">ON</button>
+            </div>
+          </header>
+          <div class="verify-stats">
+            <div><span>MODE</span><strong>OFFLINE</strong></div>
+            <div><span>TRACKER</span><strong>BLAZEFACE</strong></div>
+            <div><span>EMBED</span><strong>512D</strong></div>
+            <div><span>LATENCY</span><strong id="verifyLatency">--ms</strong></div>
+          </div>
+          <div class="verify-grid">
+            <article class="verify-stage">
+              <div class="camera-box large">
+                <video id="verifyVideo" autoplay muted playsinline></video>
+                <div class="camera-fallback">CAMERA FEED</div>
+                <button class="camera-enable" data-camera-start>ENABLE CAMERA</button>
+                <canvas class="face-canvas" data-video="verifyVideo"></canvas>
+                <div class="lock-corners"></div>
+                <span class="face-tag">CAMERA OFF</span>
+                <span class="locked-tag">WAITING</span>
+                <span class="live-tag">● LIVE</span>
+                <span class="model-tag">BLAZEFACE</span>
+                <span class="fps-tag">36 FPS</span>
+              </div>
+              <div class="scan-dock">
+                <button class="primary-action compact" id="scanFace">ϟ SCAN FACE</button>
+                <span id="scanHint">FACE LOCKED. PRESS SCAN FACE TO VERIFY.</span>
+              </div>
+            </article>
+            <aside class="verify-side">
+              <article class="panel inference-panel">
+                <h2>ϟ INFERENCE PIPELINE</h2>
+                <ol>
+                  <li id="stepDetect">DETECT</li>
+                  <li id="stepLive">LIVENESS</li>
+                  <li id="stepEmbed">EMBED</li>
+                  <li id="stepMatch">MATCH</li>
+                </ol>
+                <div class="notice" id="verifyNotice">● WAITING FOR SCAN</div>
+              </article>
+              <article class="panel identity-panel">
+                <h2>SUBJECT MATCH</h2>
+                <div class="subject-id" id="subjectId">NHAI-004</div>
+                <div class="subject-name" id="subjectName">Sunita Devi</div>
+                <div class="confidence-row"><span>CONFIDENCE</span><b><i id="confidenceBar"></i></b><strong id="confidenceText">--%</strong></div>
+                <div class="confidence-row"><span>LIVENESS</span><b><i id="livenessBar"></i></b><strong id="livenessText">--%</strong></div>
+              </article>
+              <article class="panel result-card">
+                <h2>DECISION</h2>
+                <div class="result-zone" id="verifyResult">READY FOR LOCAL AUTHENTICATION</div>
+              </article>
+            </aside>
+          </div>
+          <article class="panel verify-feed-panel">
+            <h2>REAL-TIME AUTH FEED</h2>
+            <table>
+              <thead><tr><th>TIMESTAMP</th><th>SUBJECT</th><th>CONFIDENCE</th><th>LIVENESS</th><th>PROCESSING</th><th>RESULT</th></tr></thead>
+              <tbody id="verifyFeedRows">
+                <tr><td>13:38:01.078</td><td>ADHANYA CREATIONS</td><td><span class="bar"><i style="width:85%"></i></span>85%</td><td class="ok">PASS</td><td>10ms</td><td><span class="badge ok">MATCH</span></td></tr>
+                <tr><td>13:35:51.861</td><td>SHARMA</td><td><span class="bar"><i style="width:85%"></i></span>85%</td><td class="ok">PASS</td><td>13ms</td><td><span class="badge ok">MATCH</span></td></tr>
+                <tr><td>13:13:43.057</td><td>UNKNOWN</td><td><span class="bar"><i style="width:0%"></i></span>0%</td><td class="block">FAIL</td><td>195ms</td><td><span class="badge block">SPOOF</span></td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <section class="view" id="liveness">
+          <header class="page-head center-head">
+            <h1><span>◉</span> ANTI-SPOOFING PROTOCOL</h1>
+            <p>Active & Passive Liveness Detection (MiniFASNet)</p>
+          </header>
+          <div class="liveness-grid">
+            <article class="liveness-face panel">
+              <div class="face-wire">
+                <div class="head-outline"><span></span><span></span><i></i></div>
+                <strong id="challengeText">BEGIN CHALLENGE</strong>
+                <small>REC ● &nbsp; CAM_01_FRONT</small>
+              </div>
+            </article>
+            <article class="panel challenge-panel">
+              <h2>⌁ CHALLENGE SEQUENCE</h2>
+              <div class="challenge-list">
+                <div>BLINK EYES <span>⌬</span></div>
+                <div>SMILE <span>⌬</span></div>
+                <div class="active" id="activeChallenge">TURN HEAD LEFT</div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" id="database">
+          <header class="page-head"><h1>REGISTERED ENTITIES</h1><p>Local embedded identity database (FAISS)</p></header>
+          <div class="table-panel panel">
+            <div class="database-head">
+              <div>
+                <h2>REGISTERED ENTITIES</h2>
+                <p id="databaseStatus">EDIT MODE: LOCAL BROWSER STORE</p>
+              </div>
+              <div class="database-actions">
+                <button type="button" id="addDatabaseRow">ADD ROW</button>
+                <label for="databaseUpload">UPLOAD FILE</label>
+                <input id="databaseUpload" type="file" accept=".csv,.json,image/*" multiple />
+                <button type="button" id="saveDatabase">SAVE LOCAL</button>
+                <button type="button" id="exportDatabase">EXPORT JSON</button>
+              </div>
+            </div>
+            <table>
+              <thead><tr><th>ENTITY ID</th><th>NAME</th><th>ENROLLED ON</th><th>QUALITY</th><th>VERIFICATIONS</th><th>ACTIONS</th></tr></thead>
+              <tbody id="databaseRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="view" id="logs">
+          <header class="page-head"><h1>AUDIT TRAIL</h1><p>Immutable verification attempt logs</p></header>
+          <article class="panel logs-panel" id="logPanel"></article>
+        </section>
+
+        <section class="view" id="system">
+          <header class="page-head"><h1>SYSTEM DIAGNOSTICS</h1><p>Edge inference node telemetry</p></header>
+          <div class="system-diagnostics">
+            <article class="panel diagnostic-panel"><h2>NODE_ONLINE</h2><h3>COMPUTE METRICS</h3><div><span>INFERENCE FPS</span><strong>30.6</strong><small>TARGET: 30 FPS</small></div><div><span>RAM ALLOCATION</span><strong>167.59 MB</strong><small>CAP: 2048 MB</small></div><div><span>BACKEND</span><strong>ONNX Runtime Mobile / TensorFlow Lite</strong></div><div><span>QUANTIZATION</span><strong>INT8 (ON)</strong></div></article>
+            <article class="panel diagnostic-panel"><h2>STORAGE METRICS</h2><div><span>FAISS INDEX SIZE</span><strong>21.8 KB</strong></div><div><span>TOTAL EMBEDDINGS</span><strong>8</strong></div><div><span>VECTOR DIMENSION</span><strong>512</strong></div></article>
+            <article class="panel diagnostic-panel wide"><h2>MODEL PIPELINE STATUS</h2><div><span>DETECTION</span><strong>READY</strong><small>MODEL: BlazeFace (MobileNet backbone) · ROLE: BBox + Landmarks</small></div><div><span>LIVENESS</span><strong>READY</strong><small>MODEL: MiniFASNet-v2 (INT8 quantized) · ROLE: Anti-spoofing</small></div><div><span>RECOGNITION</span><strong>READY</strong><small>MODEL: MobileFaceNet (ArcFace loss, 512D) · ROLE: Feature Extraction</small></div></article>
+          </div>
+        </section>
+
+        <section class="view" id="architecture">
+          <header class="page-head">
+            <h1><span>⌘</span> SYSTEM ARCHITECTURE</h1>
+            <p>Zero-network edge inference pipeline specification v1.0</p>
+          </header>
+          <article class="panel architecture-panel">
+            <h2>INFERENCE PIPELINE</h2>
+            <div class="architecture-flow">
+              <div class="flow-row top-flow">
+                <div class="node muted">▣<strong>CAMERA FEED</strong></div>
+                <span>→</span>
+                <div class="node cyan"><strong>PRE-PROCESSING</strong><small>RESIZE/NORMALIZE</small></div>
+                <span>→</span>
+                <div class="node green"><strong>BLAZEFACE</strong><small>DETECTION & LANDMARKS</small></div>
+              </div>
+
+              <div class="flow-row split-flow">
+                <div class="flow-lane">
+                  <div class="node green"><strong>MINIFASNET</strong><small>LIVENESS DETECTION</small></div>
+                  <span>↓</span>
+                  <div class="node orange"><strong>SPOOF CHECK</strong><small>DECISION GATE</small></div>
+                </div>
+                <div class="flow-lane">
+                  <div class="node cyan"><strong>FACE ALIGNMENT</strong><small>AFFINE TRANSFORM</small></div>
+                  <span>↓</span>
+                  <div class="node green"><strong>MOBILEFACENET</strong><small>EMBEDDING EXTRACTOR</small></div>
+                </div>
+              </div>
+
+              <div class="flow-row output-flow">
+                <div class="node muted">⚇<strong>FAISS LOCAL INDEX</strong><small>VECTOR SEARCH</small></div>
+                <span>→</span>
+                <div class="node decision">▣<strong>DECISION ENGINE</strong><small>THRESHOLD: 0.6</small></div>
+              </div>
+            </div>
+            <div class="architecture-notes">
+              <article><h3>EDGE DEPLOYMENT constraints</h3><p>Network: Strictly zero-dependency. All models packaged in app bundle. No API calls during inference.</p><p>Compute: Target 30+ FPS on consumer-grade x86/ARM devices without dedicated GPU.</p><p>Memory: Sub-500MB runtime footprint. FAISS index kept in memory for microsecond latency.</p></article>
+              <article><h3>MODEL SPECIFICATIONS</h3><p><strong>BlazeFace (Detection)</strong> Lightweight detector optimized for mobile/edge. Outputs bounding box + 6 key facial landmarks. INT8 Quantized.</p><p><strong>MobileFaceNet (Recognition)</strong> 1M parameter model producing 512-D embeddings. Trained on MS-Celeb-1M. INT8 Quantized.</p><p><strong>MiniFASNet (Anti-Spoofing)</strong> Evaluates spatial textures for presentation attacks (printed photos, screens). Auxiliary model.</p></article>
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+    <script src="./app.js?v=extract-user-fix-1"></script>
+  </body>
+</html>

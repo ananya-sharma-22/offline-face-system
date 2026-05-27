@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Open Offline Bio-Terminal",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "python3 -m http.server 5055",
+      "cwd": "${workspaceFolder}",
+      "serverReadyAction": {
+        "pattern": "Serving HTTP on .* port 5055",
+        "uriFormat": "http://localhost:5055/web_terminal/",
+        "action": "openExternally"
+      }
+    },
+    {
+      "name": "Run Backend Camera Demo",
+      "type": "python",
+      "request": "launch",
+      "module": "backend.camera_demo",
+      "cwd": "${workspaceFolder}",
+      "python": "${workspaceFolder}/.venv/bin/python"
+    }
+  ]
+}
