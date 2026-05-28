@@ -313,6 +313,10 @@ const routeMap = {
   "/docs": "architecture",
 };
 
+if (new URLSearchParams(window.location.search).get("embed") === "1") {
+  document.body.classList.add("embedded");
+}
+
 function setView(viewId, updateRoute = true) {
   navItems.forEach((item) => item.classList.toggle("active", item.dataset.view === viewId));
   views.forEach((view) => view.classList.toggle("active", view.id === viewId));
@@ -854,10 +858,58 @@ document.getElementById("databaseRows")?.addEventListener("change", (event) => {
 });
 
 function syncRouteToView() {
+  const params = new URLSearchParams(window.location.search);
+  const requestedView = params.get("view");
+  if (requestedView && document.getElementById(requestedView)) {
+    setView(requestedView, false);
+    return;
+  }
   const path = window.location.pathname.replace(/\/web_terminal\/?$/, "/");
   const viewId = routeMap[path] || routeMap[`/${path.split("/").filter(Boolean).pop() || ""}`] || "dashboard";
   setView(viewId, false);
 }
+
+globalThis.NHAIOfflineAuth = {
+  version: "1.0.0",
+  setView,
+  startCamera,
+  getUsers: () => databaseUsers.map((row) => [...row]),
+  setUsers: (rows) => {
+    databaseUsers = rows.map((row, index) => normalizeDatabaseRow(row, index + 1));
+    saveDatabaseUsers(`${databaseUsers.length} users loaded through integration API`);
+    renderTables();
+    return databaseUsers.length;
+  },
+  addUser: (row) => {
+    const normalized = normalizeDatabaseRow(row);
+    databaseUsers.unshift(normalized);
+    saveDatabaseUsers(`${normalized[0]} added through integration API`);
+    renderTables();
+    return normalized;
+  },
+  exportUsers: () => JSON.stringify(databaseUsers, null, 2),
+  openEnrollment: (entityId = nextEntityId(), name = "NEW ENTITY") => {
+    setView("enroll");
+    document.getElementById("entityId").value = entityId;
+    document.getElementById("entityName").value = name;
+  },
+};
+
+window.addEventListener("message", (event) => {
+  const message = event.data || {};
+  if (message.scope !== "NHAI_OFFLINE_AUTH") return;
+  if (message.type === "setView") setView(message.view || "dashboard", false);
+  if (message.type === "openEnrollment") window.NHAIOfflineAuth.openEnrollment(message.entityId, message.name);
+  if (message.type === "setUsers") window.NHAIOfflineAuth.setUsers(message.users || []);
+  if (message.type === "getUsers") {
+    event.source?.postMessage(
+      { scope: "NHAI_OFFLINE_AUTH", type: "users", requestId: message.requestId, users: window.NHAIOfflineAuth.getUsers() },
+      event.origin || "*",
+    );
+  }
+});
+
+window.parent?.postMessage({ scope: "NHAI_OFFLINE_AUTH", type: "ready", version: window.NHAIOfflineAuth.version }, "*");
 
 document.getElementById("databaseRows")?.addEventListener("click", (event) => {
   const target = event.target;

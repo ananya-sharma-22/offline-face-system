@@ -43,6 +43,10 @@ body {
   letter-spacing: 0;
 }
 
+img, video, canvas, svg {
+  max-width: 100%;
+}
+
 body::before,
 body::after {
   content: "";
@@ -278,7 +282,7 @@ body.light-mode .sidebar {
 .workspace {
   grid-column: 2;
   min-height: 100vh;
-  padding: 44px 68px 60px;
+  padding: clamp(24px, 3.4vw, 44px) clamp(18px, 4.8vw, 68px) 60px;
   background:
     linear-gradient(90deg, rgba(9,16,28,0.65), rgba(5,9,16,0.94)),
     repeating-linear-gradient(0deg, rgba(255,255,255,0.024) 0 1px, transparent 1px 6px);
@@ -359,7 +363,7 @@ h2 {
 
 .metric-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(170px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
   gap: 22px;
 }
 
@@ -440,7 +444,7 @@ body.light-mode .camera-fallback {
 
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 1fr 0.48fr;
+  grid-template-columns: minmax(0, 1fr) minmax(330px, 0.48fr);
   gap: 34px;
   margin-top: 34px;
 }
@@ -517,6 +521,18 @@ body.light-mode .camera-fallback {
 }
 
 .feed-panel { margin-top: 34px; min-height: 108px; }
+.feed-panel,
+.table-panel,
+.verify-feed-panel {
+  overflow-x: auto;
+}
+
+.feed-panel table,
+.table-panel table,
+.verify-feed-panel table {
+  margin-bottom: 4px;
+}
+
 .feed-row {
   min-height: 22px;
   margin-top: 20px;
@@ -672,6 +688,7 @@ input:focus {
   position: relative;
   overflow: hidden;
   aspect-ratio: 16 / 8.9;
+  max-height: min(68vh, 760px);
   background: linear-gradient(135deg, #263c3f, #0f1520);
   border: 1px solid rgba(95,154,173,0.18);
 }
@@ -870,14 +887,14 @@ input:focus {
 
 .verify-grid {
   display: grid;
-  grid-template-columns: minmax(560px, 1fr) 420px;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
   gap: 28px;
   align-items: start;
 }
 
 .verify-stats {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 16px;
   margin: -12px 0 24px;
 }
@@ -1052,7 +1069,7 @@ input:focus {
 
 .liveness-grid {
   display: grid;
-  grid-template-columns: 1fr 0.86fr;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.86fr);
   gap: 34px;
   max-width: 1275px;
   margin: 0 auto;
@@ -1148,6 +1165,7 @@ input:focus {
 
 table {
   width: 100%;
+  min-width: 760px;
   border-collapse: collapse;
   margin-top: 28px;
   color: #d9dde8;
@@ -1512,10 +1530,27 @@ th {
   .metric-grid,
   .dashboard-grid,
   .verify-grid,
-  .liveness-grid {
+  .liveness-grid,
+  .system-diagnostics,
+  .architecture-notes {
     grid-template-columns: 1fr;
   }
   .telemetry { min-width: 0; }
+  .pipeline-panel .status-stack { margin-top: 28px; }
+  .top-flow,
+  .output-flow {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .top-flow > span,
+  .output-flow > span {
+    transform: rotate(90deg);
+    min-height: 36px;
+  }
+  .split-flow {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
 }
 
 @media (max-width: 780px) {
@@ -1525,15 +1560,174 @@ th {
     width: 100%;
     min-height: auto;
   }
+  .brand {
+    height: auto;
+    padding: 18px 20px;
+  }
+  .mode-panel {
+    height: auto;
+    padding: 18px 20px;
+  }
+  .offline-row {
+    padding-left: 0;
+  }
+  .nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 14px 10px;
+  }
+  .nav-item {
+    height: 48px;
+    font-size: 15px;
+    gap: 10px;
+    padding: 0 12px;
+  }
+  .nav-item span {
+    width: 18px;
+    font-size: 18px;
+  }
   .terminal-meta { position: static; padding: 18px 22px; }
   .workspace { padding: 24px 16px; }
   .page-head.split,
   .verify-head {
     display: block;
   }
+  h1 {
+    font-size: 30px;
+  }
+  .page-head p {
+    font-size: 16px;
+  }
   .toggle-row,
   .telemetry {
     margin-top: 18px;
     flex-wrap: wrap;
   }
+  .metric-card {
+    min-height: 118px;
+    padding: 24px 22px;
+  }
+  .metric-card strong {
+    font-size: 34px;
+  }
+  .panel {
+    padding: 22px;
+  }
+  .chart-panel {
+    min-height: 360px;
+  }
+  .chart {
+    height: 260px;
+    margin-top: 20px;
+  }
+  .steps {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .steps::before,
+  .steps::after {
+    display: none;
+  }
+  .identity-body,
+  .form-panel h2 {
+    padding-inline: 20px;
+  }
+  .alert {
+    padding: 18px;
+  }
+  .camera-box,
+  .camera-box.large {
+    aspect-ratio: 4 / 5;
+    max-height: 68vh;
+  }
+  .extract-grid,
+  .hardening-grid,
+  .split-flow,
+  .database-head,
+  .logs-panel {
+    grid-template-columns: 1fr;
+  }
+  .database-head {
+    display: grid;
+  }
+  .database-actions {
+    justify-content: flex-start;
+  }
+  .face-wire {
+    width: 100%;
+    max-width: 360px;
+  }
+  .architecture-flow {
+    padding: 28px 18px;
+  }
+  .flow-lane {
+    gap: 14px;
+  }
+  .diagnostic-panel.wide {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 520px) {
+  .workspace {
+    padding: 18px 12px 38px;
+  }
+  .brand strong {
+    font-size: 17px;
+  }
+  .brand-copy span,
+  .offline-row strong {
+    font-size: 14px;
+  }
+  .nav {
+    grid-template-columns: 1fr;
+  }
+  .metric-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .telemetry {
+    display: grid;
+    gap: 10px;
+    min-width: 0;
+  }
+  .primary-action {
+    font-size: 15px;
+    letter-spacing: 0.1em;
+  }
+  .primary-action.compact {
+    width: 100%;
+  }
+  .camera-enable {
+    min-width: 150px;
+    font-size: 12px;
+  }
+  .face-tag,
+  .locked-tag,
+  .live-tag,
+  .model-tag,
+  .fps-tag {
+    font-size: 11px;
+    padding: 5px 8px;
+  }
+  .model-tag {
+    left: 82px;
+  }
+  .extract-grid strong,
+  .diagnostic-panel strong {
+    font-size: 15px;
+  }
+}
+
+body.embedded .sidebar {
+  display: none;
+}
+
+body.embedded .terminal-shell {
+  display: block;
+}
+
+body.embedded .workspace {
+  min-height: auto;
+  padding: clamp(16px, 4vw, 34px);
 }

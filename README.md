@@ -1,10 +1,10 @@
-# Datalake 3.0 Offline Face System
+# NHAI / Datalake Offline Face System
 
-Fully offline, lightweight edge-AI facial authentication system for Datalake 3.0. It combines MediaPipe Face Detection + FaceMesh tracking, MobileFaceNet recognition, encrypted local embeddings, and hybrid liveness checks for zero-network authentication.
+Fully offline, lightweight edge-AI facial authentication system for Datalake/NHAI. It combines BlazeFace-style detection, MobileFaceNet recognition, encrypted local embeddings, active/passive liveness, React Native mobile integration, and delayed sync/purge for zero-network zones.
 
 ## Features
 
-- Ultra-fast MediaPipe Face Detection + FaceMesh tracking with CPU-safe fallback.
+- Ultra-fast BlazeFace/MediaPipe-compatible face tracking with CPU-safe fallback.
 - Eye-landmark face alignment for MobileFaceNet embeddings.
 - MobileFaceNet/ArcFace ONNX embedding extraction.
 - Passive MiniFASNet anti-spoof hooks for photo, screen replay, reflection, and texture attacks.
@@ -14,7 +14,8 @@ Fully offline, lightweight edge-AI facial authentication system for Datalake 3.0
 - Face quality scoring, low-light enhancement, FPS, confidence, spoof alerts, and RAM tracking.
 - Datalake 3.0 local API routes for integration without cloud dependency.
 - PyTorch -> ONNX -> TFLite conversion scripts.
-- Flutter Android camera UI scaffold.
+- React Native Android + iOS prototype scaffold.
+- Sync and purge mechanism for AWS upload after connectivity returns.
 
 ## Quick Start
 
@@ -37,6 +38,51 @@ python3 -m http.server 5055
 ```
 
 Open `http://localhost:5055/web_terminal/`. It is a fully offline browser UI with dashboard, enrollment, face verification, liveness protocol, local database, logs, system status, and architecture pages.
+
+## Drop-In Integration
+
+This project can also be embedded into an existing web app or Python backend.
+
+Web:
+
+```html
+<script type="module" src="./sdk/web/nhai-offline-auth-widget.js"></script>
+<nhai-offline-auth src="./web_terminal/" view="verify" height="820px"></nhai-offline-auth>
+```
+
+Python:
+
+```python
+from sdk.python.nhai_offline_auth import NHAIOfflineAuth
+
+auth = NHAIOfflineAuth()
+result = auth.authenticate("camera_frame.jpg")
+```
+
+Full integration details are in `docs/INTEGRATION_GUIDE.md`.
+
+## React Native Prototype
+
+The mandatory cross-platform mobile prototype lives in `react_native_app/`.
+
+```bash
+cd react_native_app
+npm install
+npm run android
+npm run ios
+```
+
+It includes:
+
+- Android 8.0+ / iOS 12+ target notes.
+- `react-native-vision-camera` camera flow.
+- TFLite inference integration hooks.
+- Offline active liveness challenges: blink, smile, head turn.
+- Local embedding/audit storage.
+- AWS-compatible sync and purge service.
+- Responsive phone/tablet layouts.
+
+See `docs/REACT_NATIVE_DELIVERABLE.md`.
 
 ### Run From VS Code
 
@@ -88,7 +134,7 @@ Place optimized models in `ai_models/weights/`:
 
 The Python demo includes classical fallbacks so the pipeline can run without downloaded models. Production accuracy requires trained model weights.
 
-## Android Build
+## Legacy Flutter Android Build
 
 ```bash
 cd mobile_app
@@ -109,13 +155,14 @@ Copy INT8 TFLite models into `mobile_app/assets/models/` before release builds.
 
 - Face tracking: <50 ms with MediaPipe on low-end Android.
 - Full verification: <1 second with seven-frame consensus.
-- APK model budget: <150 MB total.
+- Mobile model budget: target ~20 MB, current INT8 manifest target ~6.9 MB.
 - RAM target: <400 MB on 4 GB devices.
 
 ## Project Layout
 
 ```text
-mobile_app/       Flutter Android application
+react_native_app/ React Native Android/iOS prototype
+mobile_app/       Legacy Flutter Android scaffold
 backend/          Python pipeline and optional local API
 ai_models/        Weights, conversion, quantization
 liveness/         Passive and active liveness modules

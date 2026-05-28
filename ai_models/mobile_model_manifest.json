@@ -1,0 +1,41 @@
+{
+  "target_total_size_mb": 20,
+  "models": [
+    {
+      "name": "BlazeFace short-range INT8",
+      "file": "blazeface_short_int8.tflite",
+      "target_size_mb": 0.8,
+      "purpose": "face detection and coarse landmarks",
+      "license": "open-source compatible"
+    },
+    {
+      "name": "MobileFaceNet ArcFace INT8",
+      "file": "mobilefacenet_512_int8.tflite",
+      "target_size_mb": 4.2,
+      "purpose": "512D face embedding extraction",
+      "license": "open-source compatible"
+    },
+    {
+      "name": "MiniFASNet INT8",
+      "file": "minifasnet_int8.tflite",
+      "target_size_mb": 1.9,
+      "purpose": "passive anti-spoofing",
+      "license": "open-source compatible"
+    }
+  ],
+  "estimated_total_size_mb": 6.9,
+  "runtime_targets": {
+    "verification_latency_ms": 1000,
+    "android_min_api": 26,
+    "ios_min_version": "12.0",
+    "min_ram_gb": 3,
+    "recognition_accuracy_target": ">95%",
+    "recognition_threshold": 0.62,
+    "liveness_threshold": 0.70
+  },
+  "training_requirements": {
+    "demographic_focus": "diverse Indian demographics",
+    "lighting_conditions": ["harsh sunlight", "low light", "shadow", "outdoor toll plaza"],
+    "notes": "Prototype contains integration hooks. Production >95% accuracy requires training/calibration on approved Indian demographic and field-lighting datasets."
+  }
+}
